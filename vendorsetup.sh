@@ -1,0 +1,3 @@
+add_lunch_combo twrp_f103s-user
+add_lunch_combo twrp_f103s-userdebug
+add_lunch_combo twrp_f103s-eng
