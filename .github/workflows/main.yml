@@ -1,10 +1,10 @@
 name: build recovery
 on:
   push:
-    branches: ["oss-T/twrp-12.1"]
+    branches: main
   pull_request:
   workflow_dispatch:
-  
+
 jobs:
   build-recovery:
     runs-on: ubuntu-20.04
@@ -14,7 +14,7 @@ jobs:
 
     - name: "Checkout Repo"
       uses: actions/checkout@v4
-      
+
     # Cleanup The Actions Workspace Using Custom Composite Run Actions
     - name: Free Disk Space
       uses: rokibhasansagar/slimhub_actions@main
@@ -34,9 +34,9 @@ jobs:
     - name: Setup ccache
 
       uses: hendrikmuhs/ccache-action@main
-      with: 
+      with:
         max-size: 4G
-         
+
     - name: Install repo
       run: |
         mkdir ~/bin
@@ -44,7 +44,7 @@ jobs:
         curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
-      
+
     - name: Initialize repo
       run: |
         mkdir workspace
@@ -52,14 +52,14 @@ jobs:
         echo "workspace-folder=$(pwd)" >> $GITHUB_OUTPUT
         git config --global user.name "Nico170420"
         git config --global user.email "b170420nc@gmail.com"
-        python3 /bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni -b twrp-9.0
+        python3 /bin/repo init --depth=1 -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni -b twrp-7.1
       id: pwd
-          
+
     - name: Repo Sync
       run: |
         python3 /bin/repo sync -j$(nproc --all) --force-sync
       working-directory: workspace
-      
+
     - name: Clone device tree
       run: |
         git clone https://github.com/SekaiMoe/device_gionee_f103s-twrp/ ./device/gionee/f103s
@@ -74,7 +74,7 @@ jobs:
       run: |
         . build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
-        lunch twrp_f103s-eng && make clean && make recoveryimage -j$(nproc --all)
+        lunch omni_f103s-eng && make clean && make recoveryimage -j$(nproc --all)
         sudo chmod 777 -R out/* 
       working-directory: workspace
 
