@@ -16,8 +16,8 @@ PRODUCT_MANUFACTURER := gionee
 PRODUCT_RELEASE_NAME := gionee f103s
 
 # Encryption
-#PRODUCT_PACKAGES += \
-#    libcryptfs_hw
+PRODUCT_PACKAGES += \
+    libcryptfs_hw
 
 PRODUCT_GMS_CLIENTID_BASE := android-google
 
